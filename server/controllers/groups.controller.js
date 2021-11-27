@@ -1,4 +1,4 @@
-const Group = require('../db/groups.schema');
+const { User, Group } = require('../db');
 
 module.exports = {
   getGroups: (req, res, next) => {
@@ -20,9 +20,7 @@ module.exports = {
   },
   postGroup: async (req, res, next) => {
     try {
-      const createGroup = await Group.create( req.body );
-
-      res.json(createGroup);
+      await Group.create( req.body );
     } catch (e) {
       next(e);
     }
@@ -30,15 +28,17 @@ module.exports = {
   updateGroup: async (req, res, next) => {
     try {
       const { group } = req;
+
       const { body } = req;
 
       if (body.name !== group.name) {
         group.name = body.name;
       }
+
       if (body.description !== group.description) {
-        group.name = body.name;
+        group.description = body.description;
       }
-      // categories & users update not created!!!
+
       await Group.updateOne({ _id: group._id }, group);
     } catch (e) {
       next(e);
@@ -53,6 +53,21 @@ module.exports = {
       res.json({
         message: `Group ${ group.name } deleted`
       });
+    } catch (e) {
+      next(e);
+    }
+  },
+  addUser: async (req, res, next) => {
+    try {
+      const { group, user } = req;
+
+      group.users.push(user._id);
+
+      user.groups.push(group._id);
+
+      await Group.updateOne({ _id: group._id }, group);
+
+      await User.updateOne({ _id: user.id }, user);
     } catch (e) {
       next(e);
     }

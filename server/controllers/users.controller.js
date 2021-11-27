@@ -28,6 +28,7 @@ module.exports = {
   updateUser: async (req, res, next) => {
     try {
       const { user } = req;
+
       const { body } = req;
 
       if ( user.email !== body.email ) {

@@ -1,5 +1,5 @@
-const Group = require('../db/groups.schema');
 const ErrorHandler = require('../errors/error.handler');
+const { Group } = require('../db');
 const { USER } = require('../config/db.collections.enum');
 
 module.exports = {
@@ -7,7 +7,7 @@ module.exports = {
     try {
       req.groups = await Group
         .find({}, { name: 1, description: 1 })
-        .populate( `${USER}.user`, { email: 1, role: 1 } );
+        .populate( USER, { email: 1, role: 1 } );
 
       next();
     } catch (e) {

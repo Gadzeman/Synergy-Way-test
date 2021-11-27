@@ -12,18 +12,11 @@ const groupsSchema = new Schema({
     type: String,
     required: true
   },
-  category: {
+  users: [{
     type: Schema.Types.ObjectId,
-    ref: CATEGORY
-  },
-  users: [
-    {
-      user: {
-        type: Schema.Types.ObjectId,
-        ref: USER
-      }
-    }
-  ]
+    ref: USER
+  }]
+
 }, { timestamps: true });
 
 module.exports = model(GROUP, groupsSchema);

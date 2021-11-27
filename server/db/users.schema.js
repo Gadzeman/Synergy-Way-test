@@ -14,14 +14,10 @@ const usersSchema = new Schema({
     default: userRoles.USER,
     enum: Object.values( userRoles )
   },
-  groups: [
-    {
-      group: {
-        type: Schema.Types.ObjectId,
-        ref: GROUP
-      }
-    }
-  ]
+  groups: [{
+    type: Schema.Types.ObjectId,
+    ref: GROUP
+  }]
 }, { timestamps: true });
 
 module.exports = model(USER, usersSchema);

@@ -1,10 +1,13 @@
-const User = require('../db/users.schema');
 const ErrorHandler = require('../errors/error.handler');
+const { User } = require('../db');
+const { GROUP } = require('../config/db.collections.enum');
 
 module.exports = {
   getAllUsersWithoutParams: async (req, res, next) => {
     try {
-      req.users = await User.find({});
+      req.users = await User
+        .find({}, { email: 1, role: 1 })
+        .populate( GROUP , { name: 1 } );
 
       next();
     } catch (e) {

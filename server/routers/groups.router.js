@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { groupsMiddleware } = require('../middlewares');
+const { groupsMiddleware, usersMiddleware } = require('../middlewares');
 const { groupsController } = require('../controllers');
 const { groupsValidator } = require('../validators');
 
@@ -17,16 +17,25 @@ router.post(
   groupsController.postGroup
 );
 router.put(
-  '/:user_id',
+  '/:group_id',
+  groupsMiddleware.validateGroup( groupsValidator.validateGroupNewBody ),
   groupsMiddleware.getOneGroupByDynamicParams('name'),
   groupsMiddleware.ifGroupPresent,
-  groupsMiddleware.getOneGroupByDynamicParams('user_id', 'params', '_id'),
+  groupsMiddleware.getOneGroupByDynamicParams('group_id', 'params', '_id'),
   groupsMiddleware.ifGroupNotPresent,
   groupsController.updateGroup
 );
+router.put(
+  '/add/:group_id',
+  groupsMiddleware.getOneGroupByDynamicParams('group_id', 'params', '_id'),
+  groupsMiddleware.ifGroupNotPresent,
+  usersMiddleware.getOneUserByDynamicParams('email'),
+  usersMiddleware.ifUserNotPresent,
+  groupsController.addUser
+);
 router.delete(
-  '/:user_id',
-  groupsMiddleware.getOneGroupByDynamicParams('user_id', 'params', '_id'),
+  '/:group_id',
+  groupsMiddleware.getOneGroupByDynamicParams('group_id', 'params', '_id'),
   groupsMiddleware.ifGroupNotPresent,
   groupsController.deleteGroup
 );
