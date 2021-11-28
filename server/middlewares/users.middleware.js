@@ -1,5 +1,5 @@
 const ErrorHandler = require('../errors/error.handler');
-const { User } = require('../db');
+const { User } = require('../models');
 const { GROUP } = require('../config/db.collections.enum');
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
           next(e);
         }
       },
-  ifUserPresent: (req, res, next) => {
+  ifUserExist: (req, res, next) => {
     try {
       const { user } = req;
 
@@ -39,7 +39,7 @@ module.exports = {
       next(e);
     }
   },
-  ifUserNotPresent: (req, res, next) => {
+  ifUserNotExist: (req, res, next) => {
     try {
       const { user } = req;
 

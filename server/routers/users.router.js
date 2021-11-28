@@ -13,22 +13,22 @@ router.post(
   '/',
   usersMiddleware.validateUser( usersValidator.validateUserBody ),
   usersMiddleware.getOneUserByDynamicParams('email'),
-  usersMiddleware.ifUserPresent,
+  usersMiddleware.ifUserExist,
   usersController.postUser
 );
 router.put(
   '/:user_id',
   usersMiddleware.validateUser( usersValidator.validateUserRoles ),
   usersMiddleware.getOneUserByDynamicParams('email'),
-  usersMiddleware.ifUserPresent,
+  usersMiddleware.ifUserExist,
   usersMiddleware.getOneUserByDynamicParams('user_id', 'params', '_id'),
-  usersMiddleware.ifUserNotPresent,
+  usersMiddleware.ifUserNotExist,
   usersController.updateUser
 );
 router.delete(
   '/:user_id',
   usersMiddleware.getOneUserByDynamicParams('user_id', 'params', '_id'),
-  usersMiddleware.ifUserNotPresent,
+  usersMiddleware.ifUserNotExist,
   usersController.deleteUser
 );
 

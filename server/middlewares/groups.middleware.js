@@ -1,5 +1,5 @@
 const ErrorHandler = require('../errors/error.handler');
-const { Group } = require('../db');
+const { Group } = require('../models');
 const { USER } = require('../config/db.collections.enum');
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
           next(e);
         }
       },
-  ifGroupPresent: (req, res, next) => {
+  ifGroupExist: (req, res, next) => {
     try {
       const { group } = req;
 
@@ -39,12 +39,55 @@ module.exports = {
       next(e);
     }
   },
-  ifGroupNotPresent: (req, res, next) => {
+  ifGroupNotExist: (req, res, next) => {
     try {
       const { group } = req;
 
       if ( !group ) {
         throw new ErrorHandler(404, 'Group not found');
+      }
+
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  ifUsersExistInGroup: (req, res, next) => {
+    try {
+      const { group } = req;
+
+      if ( group.users.length !== 0 ) {
+        throw new ErrorHandler(403, 'If users exist you can not delete the group');
+      }
+
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  ifUserExistInGroup: (req, res, next) => {
+    try {
+      const { user, group } = req;
+
+      const foundUser = group.users.find( _id => _id.toString() === user._id.toString() );
+
+      if ( foundUser ) {
+        throw new ErrorHandler(400, 'User already exist in this group');
+      }
+
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
+  ifUserNotExistInGroup: (req, res, next) => {
+    try {
+      const { user, group } = req;
+
+      const foundUser = group.users.find( _id => _id.toString() === user._id.toString() );
+
+      if ( !foundUser ) {
+        throw new ErrorHandler(400, 'User not exist in this group');
       }
 
       next();

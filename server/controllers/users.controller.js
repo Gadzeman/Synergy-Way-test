@@ -1,4 +1,4 @@
-const User = require('../db/users.schema');
+const { User, Group } = require('../models');
 
 module.exports = {
   getUsers: (req, res, next) => {
@@ -48,11 +48,11 @@ module.exports = {
     try {
       const { user } = req;
 
-      await User.deleteOne({ _id: user._id });
+      for (const group_id of user.groups) {
+        await Group.updateOne({ _id: group_id }, { $pull: { users: user._id } });
+      }
 
-      res.json({
-        message: `User with ${ user.email } email deleted`
-      });
+      await User.deleteOne({ _id: user._id });
     } catch (e) {
       next(e);
     }

@@ -1,4 +1,4 @@
-const { User, Group } = require('../db');
+const { User, Group } = require('../models');
 
 module.exports = {
   getGroups: (req, res, next) => {
@@ -49,25 +49,36 @@ module.exports = {
       const { group } = req;
 
       await Group.deleteOne({ _id: group._id });
-
-      res.json({
-        message: `Group ${ group.name } deleted`
-      });
     } catch (e) {
       next(e);
     }
   },
-  addUser: async (req, res, next) => {
+  addUserToGroup: async (req, res, next) => {
     try {
       const { group, user } = req;
 
-      group.users.push(user._id);
-
       user.groups.push(group._id);
+
+      group.users.push(user._id);
 
       await Group.updateOne({ _id: group._id }, group);
 
       await User.updateOne({ _id: user.id }, user);
+    } catch (e) {
+      next(e);
+    }
+  },
+  deleteUserFromGroup: async (req, res, next) => {
+    try {
+      const { group, group: { users }, user, user: { groups } } = req;
+
+      const filteredUsers = users.filter( _id => _id.toString() !== user._id.toString() );
+
+      const filteredGroups = groups.filter( _id => _id.toString() !== group._id.toString() );
+
+      await Group.updateOne({ _id: group._id }, { group, users: filteredUsers });
+
+      await User.updateOne({ _id: user._id }, { user, groups: filteredGroups });
     } catch (e) {
       next(e);
     }

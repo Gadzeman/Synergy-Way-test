@@ -13,31 +13,42 @@ router.post(
   '/',
   groupsMiddleware.validateGroup( groupsValidator.validateGroupBody ),
   groupsMiddleware.getOneGroupByDynamicParams('name'),
-  groupsMiddleware.ifGroupPresent,
+  groupsMiddleware.ifGroupExist,
   groupsController.postGroup
 );
 router.put(
   '/:group_id',
   groupsMiddleware.validateGroup( groupsValidator.validateGroupNewBody ),
   groupsMiddleware.getOneGroupByDynamicParams('name'),
-  groupsMiddleware.ifGroupPresent,
+  groupsMiddleware.ifGroupExist,
   groupsMiddleware.getOneGroupByDynamicParams('group_id', 'params', '_id'),
-  groupsMiddleware.ifGroupNotPresent,
+  groupsMiddleware.ifGroupNotExist,
   groupsController.updateGroup
 );
-router.put(
+router.put( // add user to group
   '/add/:group_id',
   groupsMiddleware.getOneGroupByDynamicParams('group_id', 'params', '_id'),
-  groupsMiddleware.ifGroupNotPresent,
+  groupsMiddleware.ifGroupNotExist,
   usersMiddleware.getOneUserByDynamicParams('email'),
-  usersMiddleware.ifUserNotPresent,
-  groupsController.addUser
+  usersMiddleware.ifUserNotExist,
+  groupsMiddleware.ifUserExistInGroup,
+  groupsController.addUserToGroup
 );
 router.delete(
   '/:group_id',
   groupsMiddleware.getOneGroupByDynamicParams('group_id', 'params', '_id'),
-  groupsMiddleware.ifGroupNotPresent,
+  groupsMiddleware.ifGroupNotExist,
+  groupsMiddleware.ifUsersExistInGroup,
   groupsController.deleteGroup
+);
+router.delete( // delete user from group
+  '/delete/:group_id',
+  groupsMiddleware.getOneGroupByDynamicParams('group_id', 'params', '_id'),
+  groupsMiddleware.ifGroupNotExist,
+  usersMiddleware.getOneUserByDynamicParams('email'),
+  usersMiddleware.ifUserNotExist,
+  groupsMiddleware.ifUserNotExistInGroup,
+  groupsController.deleteUserFromGroup
 );
 
 module.exports = router;
