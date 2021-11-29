@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 
-const { usersRouter, groupsRouter } = require('./routers');
+const { usersRouter, groupsRouter, categoriesRouter } = require('./routers');
 const { PORT, DB_CONNECT_URL } = require('./config/variables');
 
 const app = express();
@@ -10,6 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/users', usersRouter);
 app.use('/groups', groupsRouter);
+app.use('/categories', categoriesRouter);
 app.use('*', _error); // eslint-disable-line
 
 _start(); // eslint-disable-line

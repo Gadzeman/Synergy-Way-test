@@ -15,6 +15,10 @@ const groupsSchema = new Schema({
   users: [{
     type: Schema.Types.ObjectId,
     ref: USER
+  }],
+  categories: [{
+    type: Schema.Types.ObjectId,
+    ref: CATEGORY
   }]
 
 }, { timestamps: true });

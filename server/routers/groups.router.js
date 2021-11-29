@@ -26,7 +26,7 @@ router.put(
   groupsController.updateGroup
 );
 router.put( // add user to group
-  '/add/:group_id',
+  '/add/user/:group_id',
   groupsMiddleware.getOneGroupByDynamicParams('group_id', 'params', '_id'),
   groupsMiddleware.ifGroupNotExist,
   usersMiddleware.getOneUserByDynamicParams('email'),
@@ -42,7 +42,7 @@ router.delete(
   groupsController.deleteGroup
 );
 router.delete( // delete user from group
-  '/delete/:group_id',
+  '/delete/user/:group_id',
   groupsMiddleware.getOneGroupByDynamicParams('group_id', 'params', '_id'),
   groupsMiddleware.ifGroupNotExist,
   usersMiddleware.getOneUserByDynamicParams('email'),
