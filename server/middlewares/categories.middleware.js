@@ -36,19 +36,19 @@ module.exports = {
       next(e);
     }
   },
-  // ifCategoryNotExist: (req, res, next) => {
-  //   try {
-  //     const { category } = req;
-  //
-  //     if ( !category ) {
-  //       throw new ErrorHandler(404, 'Category not found');
-  //     }
-  //
-  //     next();
-  //   } catch (e) {
-  //     next(e);
-  //   }
-  // },
+  ifCategoryNotExist: (req, res, next) => {
+    try {
+      const { category } = req;
+
+      if ( !category ) {
+        throw new ErrorHandler(404, 'Category not found');
+      }
+
+      next();
+    } catch (e) {
+      next(e);
+    }
+  },
   validateCategory: ( validator ) => (req, res, next) => {
     try {
       const { error } = validator.validate( req.body );

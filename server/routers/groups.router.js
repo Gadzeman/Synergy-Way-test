@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { groupsMiddleware, usersMiddleware } = require('../middlewares');
+const { groupsMiddleware, usersMiddleware, categoriesMiddleware } = require('../middlewares');
 const { groupsController } = require('../controllers');
 const { groupsValidator } = require('../validators');
 
@@ -34,6 +34,14 @@ router.put( // add user to group
   groupsMiddleware.ifUserExistInGroup,
   groupsController.addUserToGroup
 );
+router.put(
+  '/add/category/:group_id',
+  groupsMiddleware.getOneGroupByDynamicParams('group_id', 'params', '_id'),
+  groupsMiddleware.ifGroupNotExist,
+  categoriesMiddleware.getCategoryByDynamicParams('name'),
+  categoriesMiddleware.ifCategoryNotExist,
+  groupsController.addCategoryToGroup
+);
 router.delete(
   '/:group_id',
   groupsMiddleware.getOneGroupByDynamicParams('group_id', 'params', '_id'),
@@ -49,6 +57,14 @@ router.delete( // delete user from group
   usersMiddleware.ifUserNotExist,
   groupsMiddleware.ifUserNotExistInGroup,
   groupsController.deleteUserFromGroup
+);
+router.delete(
+  '/delete/category/:group_id',
+  groupsMiddleware.getOneGroupByDynamicParams('group_id', 'params', '_id'),
+  groupsMiddleware.ifGroupNotExist,
+  categoriesMiddleware.getCategoryByDynamicParams('name'),
+  categoriesMiddleware.ifCategoryNotExist,
+  groupsController.deleteCategoryFromGroup
 );
 
 module.exports = router;
