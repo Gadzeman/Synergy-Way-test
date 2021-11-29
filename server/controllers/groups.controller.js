@@ -68,6 +68,17 @@ module.exports = {
       next(e);
     }
   },
+  addCategoryToGroup: async (req, res, next) => {
+    try {
+      const { group, category } = req;
+
+      group.categories.push(category._id);
+
+      await Group.updateOne({ _id: group._id }, group);
+    } catch (e) {
+      next(e);
+    }
+  },
   deleteUserFromGroup: async (req, res, next) => {
     try {
       const { group, group: { users }, user, user: { groups } } = req;
@@ -79,6 +90,17 @@ module.exports = {
       await Group.updateOne({ _id: group._id }, { group, users: filteredUsers });
 
       await User.updateOne({ _id: user._id }, { user, groups: filteredGroups });
+    } catch (e) {
+      next(e);
+    }
+  },
+  deleteCategoryFromGroup: async (req, res, next) => {
+    try {
+      const { group, group: { categories }, category } = req;
+
+      const filteredCategories = categories.filter( _id => _id.toString() !== category._id.toString() );
+
+      await Group.updateOne({ _id: group._id }, { group, categories: filteredCategories });
     } catch (e) {
       next(e);
     }

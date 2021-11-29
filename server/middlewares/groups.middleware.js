@@ -1,13 +1,14 @@
 const ErrorHandler = require('../errors/error.handler');
 const { Group } = require('../models');
-const { USER } = require('../config/db.collections.enum');
+const { USER, CATEGORY } = require('../config/db.collections.enum');
 
 module.exports = {
   getAllGroupsWithoutParams: async (req, res, next) => {
     try {
       req.groups = await Group
         .find({}, { name: 1, description: 1 })
-        .populate( USER, { email: 1, role: 1 } );
+        .populate( USER, { email: 1, role: 1 } )
+        .populate( CATEGORY, { name: 1 } );
 
       next();
     } catch (e) {
