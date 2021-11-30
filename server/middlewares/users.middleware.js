@@ -7,7 +7,7 @@ module.exports = {
     try {
       req.users = await User
         .find({}, { email: 1, role: 1 })
-        .populate( GROUP , { name: 1 } );
+        .populate( GROUP , { name: 1, description: 1 } );
 
       next();
     } catch (e) {

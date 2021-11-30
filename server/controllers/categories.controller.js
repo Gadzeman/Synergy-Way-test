@@ -19,6 +19,10 @@ module.exports = {
   postCategory: async (req, res, next) => {
     try {
       await Category.create(req.body);
+
+      res.json({
+        message: 'Category created'
+      });
     } catch (e) {
       next(e);
     }

@@ -21,6 +21,11 @@ module.exports = {
   postUser: async (req, res, next) => {
     try {
       await User.create( req.body );
+
+      res.json({
+        message: 'User created'
+      });
+      console.log('User created');
     } catch (e) {
       next(e);
     }
@@ -40,6 +45,11 @@ module.exports = {
       }
 
       await User.updateOne({ _id: user._id }, user);
+
+      res.json({
+        message: 'User updated'
+      });
+      console.log('User updated');
     } catch (e) {
       next(e);
     }
@@ -53,6 +63,11 @@ module.exports = {
       }
 
       await User.deleteOne({ _id: user._id });
+
+      res.json({
+        message: 'User deleted'
+      });
+      console.log('User deleted');
     } catch (e) {
       next(e);
     }

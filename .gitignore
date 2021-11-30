@@ -1,0 +1,7 @@
+.idea
+synergy-web-test.iml
+server/.env
+server/package-lock.json
+server/node_modules
+client/node_modules
+client/package-lock.json

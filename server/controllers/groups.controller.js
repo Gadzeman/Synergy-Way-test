@@ -21,6 +21,11 @@ module.exports = {
   postGroup: async (req, res, next) => {
     try {
       await Group.create( req.body );
+
+      res.json({
+        message: 'Group created'
+      });
+      console.log('Group created');
     } catch (e) {
       next(e);
     }
@@ -40,6 +45,11 @@ module.exports = {
       }
 
       await Group.updateOne({ _id: group._id }, group);
+
+      res.json({
+        message: 'Group updated'
+      });
+      console.log('Group updated');
     } catch (e) {
       next(e);
     }
@@ -49,6 +59,11 @@ module.exports = {
       const { group } = req;
 
       await Group.deleteOne({ _id: group._id });
+
+      res.json({
+        message: 'Group deleted'
+      });
+      console.log('Group deleted');
     } catch (e) {
       next(e);
     }
@@ -64,6 +79,11 @@ module.exports = {
       await Group.updateOne({ _id: group._id }, group);
 
       await User.updateOne({ _id: user.id }, user);
+
+      res.json({
+        message: 'User added to group'
+      });
+      console.log('User added to group');
     } catch (e) {
       next(e);
     }
@@ -75,6 +95,11 @@ module.exports = {
       group.categories.push(category._id);
 
       await Group.updateOne({ _id: group._id }, group);
+
+      res.json({
+        message: 'Category added to group'
+      });
+      console.log('Category added to group');
     } catch (e) {
       next(e);
     }
@@ -90,6 +115,11 @@ module.exports = {
       await Group.updateOne({ _id: group._id }, { group, users: filteredUsers });
 
       await User.updateOne({ _id: user._id }, { user, groups: filteredGroups });
+
+      res.json({
+        message: 'User deleted from group'
+      });
+      console.log('User deleted rom group');
     } catch (e) {
       next(e);
     }
@@ -101,6 +131,11 @@ module.exports = {
       const filteredCategories = categories.filter( _id => _id.toString() !== category._id.toString() );
 
       await Group.updateOne({ _id: group._id }, { group, categories: filteredCategories });
+
+      res.json({
+        message: 'Category deleted from group'
+      });
+      console.log('Category deleted from group');
     } catch (e) {
       next(e);
     }
