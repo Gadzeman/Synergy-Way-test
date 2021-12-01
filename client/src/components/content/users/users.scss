@@ -1,0 +1,87 @@
+.users {
+  &__new {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    border: none;
+    border-radius: 10px;
+    width: 200px;
+  }
+  &__new:hover {
+    background: #589e9d;
+    color: white;
+  }
+  &__table {
+    width: 70% !important;
+    margin: auto;
+  }
+  &__item {
+    button {
+      width: 70%;
+      border: none;
+      border-radius: 10px;
+    }
+    button:hover {
+      background: #589e9d;
+      color: white;
+    }
+  }
+}
+
+// Modal window for adding new user function
+.modalWindow {
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.4);
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.4s;
+  &__active {
+    opacity: 1;
+    pointer-events: all;
+    transition: 0.4s;
+  }
+  &__content {
+    height: 400px;
+    width: 400px;
+    background: white;
+    border-radius: 10%;
+    transition: 0.5s;
+    transform: scale(0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    button {
+      width: 50%;
+      height: 50px;
+      border: none;
+    }
+    button:hover {
+      background: black;
+      color: white;
+      border-radius: 15px;
+    }
+    input {
+      width: 50%;
+    }
+    &__active {
+      transition: 0.5s;
+      transform: scale(1);
+    }
+  }
+}
+
+@media screen and (max-width: 705px) {
+  .users {
+    &__table {
+      width: 100% !important;
+    }
+  }
+}
+

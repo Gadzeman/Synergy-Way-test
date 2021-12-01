@@ -20,7 +20,7 @@ module.exports = {
       async (req, res, next) =>
       {
         try {
-          req.group = await Group.findOne({ [dbField]: req[searchIn][paramName] });
+          req.group = await Group.findOne({ [dbField]: req[searchIn][paramName] }).populate( USER );
 
           next();
         } catch (e) {
@@ -70,7 +70,7 @@ module.exports = {
     try {
       const { user, group } = req;
 
-      const foundUser = group.users.find( _id => _id.toString() === user._id.toString() );
+      const foundUser = group.users.find( u => u.email === user.email );
 
       if ( foundUser ) {
         throw new ErrorHandler(400, 'User already exist in this group');
@@ -85,7 +85,7 @@ module.exports = {
     try {
       const { user, group } = req;
 
-      const foundUser = group.users.find( _id => _id.toString() === user._id.toString() );
+      const foundUser = group.users.find( u => u.email === user.email );
 
       if ( !foundUser ) {
         throw new ErrorHandler(400, 'User not exist in this group');

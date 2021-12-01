@@ -9,6 +9,12 @@ router.get(
   groupsMiddleware.getAllGroupsWithoutParams,
   groupsController.getGroups
 );
+router.get(
+  '/:group_id',
+  groupsMiddleware.getOneGroupByDynamicParams('group_id', 'params', '_id'),
+  groupsMiddleware.ifGroupNotExist,
+  groupsController.getGroup
+);
 router.post(
   '/',
   groupsMiddleware.validateGroup( groupsValidator.validateGroupBody ),

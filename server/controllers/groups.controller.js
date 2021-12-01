@@ -18,6 +18,15 @@ module.exports = {
       next(e);
     }
   },
+  getGroup: (req, res, next) => {
+    try {
+      const { group } = req;
+
+      res.json(group);
+    } catch (e) {
+      next(e);
+    }
+  },
   postGroup: async (req, res, next) => {
     try {
       await Group.create( req.body );
@@ -108,7 +117,7 @@ module.exports = {
     try {
       const { group, group: { users }, user, user: { groups } } = req;
 
-      const filteredUsers = users.filter( _id => _id.toString() !== user._id.toString() );
+      const filteredUsers = users.filter( u => u.email !== user.email );
 
       const filteredGroups = groups.filter( _id => _id.toString() !== group._id.toString() );
 
